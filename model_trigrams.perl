@@ -14,8 +14,8 @@ my $abs_path = dirname(abs_path($0));
 $abs_path =~ s/\/scripts$//;
 #my $ling = shift(@ARGV);
 my $feat = shift(@ARGV);
-my $output = $abs_path."trigrams_"  . $feat . "\.st";
-#print STDERR "PATH: $abs_path";
+my $output = $abs_path."/trigrams_"  . $feat . "\.st";
+print STDERR "PATH: $abs_path";
 
 
 $n=1;
@@ -36,20 +36,23 @@ while ($line = <STDIN>) {
     $tr{$tri}++;
     $bi{$bi}++;
     $uni{$w1}++;
-
+    #print "#$tri# --> #$tr{$tri}#\n"; #$prob_bigram# #$prob_unigram#\n"
     $n++;
 }
 
 foreach $trigram (sort keys %tr) {
     if ($tr{$trigram} > 0) {
-	#print >> sys.stderr, freq
+	#print "$trigram --> #$tr{$trigram}#\n"; #$prob_bigram# #$prob_unigram#\n"
+	#print "#$trigram# --> #$tr{$trigram}#\n"; #$prob_bigram# #$prob_unigram#\n"
        # if 
-        ($w1, $w2) = split (" ", $bigram);
+        ($w1, $w2, $w3) = split (" ", $trigram);
 	$unigram = $w1;
         $bigram = $w1 . " " . $w2;
-        $trigram =  $w1 . " " . $w2 .  " " . $w3;
+        #$trigram =  $w1 . " " . $w2 .  " " . $w3;
+	#print "#$trigram# --> #$tr{$trigram}#\n"; #$prob_bigram# #$prob_unigram#\n"
+	#print "#$bigram# --> #$bi{$bigram}#\n"; #$prob_bigram# #$prob_unigram#\n"
         #$tetragram =  $w1 . " " . $w2 .  " " . $w3 .  " " . $w4  ;
-        #$pentagram =  $w1 . " " . $w2 .  " " . $w3 .  " " . $w4 .  " " . $w5  ;
+        ##$pentagram =  $w1 . " " . $w2 .  " " . $w3 .  " " . $w4 .  " " . $w5  ;
         #$hexagram =  $w1 . " " . $w2 .  " " . $w3 .  " " . $w4 .  " " . $w5 .  " " . $w6  ;
        # $prob_setegram{$setegram} = ($set{$setegram} / $hex{$hexagram}) if ($hex{$hexagram});
        # $prob_hexagram{$hexagram} = ($hex{$hexagram} / $pen{$pentagram}) if ($pen{$pentagram});
@@ -58,7 +61,9 @@ foreach $trigram (sort keys %tr) {
         $prob_trigram{$trigram} = ($tr{$trigram} / $bi{$bigram}) if ($bi{$bigram});
         $prob_bigram{$bigram} = ($bi{$bigram} / $uni{$w1}) if ($uni{$w1}); ##prob (wi|wi-1) prob (b|a)
         $prob_unigram{$unigram} = ($uni{$w1} / $n ) if ($n && $uni{$w1} ); ##prob (c)
-	#print '%s %s_%s_%s_%s\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f' % (w5, w1, w2, w3, w4, prob_pentagram, prob_tetragram, prob_trigram, prob_bigram, prob_unigram)
+	#print "#$prob_trigram{$trigram}# #$bigram# --> #$bi{$bigram}#\n"; #$prob_bigram# #$prob_unigram#\n"
+#	print "$w1 $w2 $w3 --> #$prob_trigram# #$prob_bigram# #$prob_unigram#\n"
+	#print '%s %s_%s_%s_%s\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f' % (w1, w2, w3, prob_trigram, prob_bigram, prob_unigram)
     }
 }
 

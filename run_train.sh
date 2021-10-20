@@ -1,1 +1,1 @@
-./tokenizer.perl  |./5grams.perl |./model_trigrams.perl $1
+./tokenizer.perl  |./3grams.perl |./model_trigrams.perl $1
